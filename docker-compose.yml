@@ -1,0 +1,36 @@
+version: '3.6'
+
+services:
+    # Backend API
+    motorsport-api:
+        container_name: backend
+        build: ./
+        command: npm start
+        working_dir: /usr/src/motorsport-api
+        environment:
+            POSTGRES_URI: postgres://andy:eaglehawk17@postgres:5432/motorsport-docker
+            REDIS_URI: redis://redis:6379
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./:/usr/src/motorsport-api
+    
+    # Postgres
+    postgres:
+        container_name: postgres
+        build: ./postgres
+        environment: 
+            POSTGRES_USER: andy
+            POSTGRES_HOST: postgres
+            POSTGRES_URL: postgres://andy:eaglehawk17@localhost:5432/motorsport-docker
+            POSTGRES_PASSWORD: eaglehawk17
+            POSTGRES_DB: motorsport-docker
+        ports:
+            - "5431:5432"
+
+    # Redis
+    redis:
+        image: redis
+        ports:
+            - "6379:6379"
+    
